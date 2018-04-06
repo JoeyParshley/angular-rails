@@ -1,21 +1,29 @@
-angular.module('flapperNews', ['ui.router','templates'])
-
+angular.module('flapperNews', ['ui.router', 'templates'])
 .config([
-	'$stateProvider',
-	'$urlRouterProvider',
-	function($stateProvider, $urlRouterProvider) {
+'$stateProvider',
+'$urlRouterProvider',
+function($stateProvider, $urlRouterProvider) {
+  $stateProvider
+    .state('home', {
+      url: '/home',
+      templateUrl: 'home/_home.html',
+      resolve: {
+        postPromise: ['posts', function(posts){
+          return posts.getAll();
+        }]
+      },
+      controller: 'MainCtrl'
+    })
+    .state('posts', {
+      url: '/posts/{id}',
+      templateUrl: 'posts/_posts.html',
+      controller: 'PostsCtrl',
+      resolve: {
+        post: ['$stateParams', 'posts', function($stateParams, posts) {
+          return posts.get($stateParams.id);
+        }]
+      }
+    });
 
-	  $stateProvider
-	    .state('home', {
-	      url: '/home',
-	      templateUrl: 'home/_home.html',
-	      controller: 'MainCtrl'
-	    })
-	    .state('posts', {
-		  url: '/posts/{id}',
-		  templateUrl: 'post/_posts.html',
-		  controller: 'PostsCtrl'
-		});
-
-	  $urlRouterProvider.otherwise('home');
-}])
+$urlRouterProvider.otherwise('home');
+}]);

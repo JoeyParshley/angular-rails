@@ -3,9 +3,9 @@
 one:
   body: MyString
   upvotes: 1
-  post_id: 
+  post: one
 
 two:
   body: MyString
   upvotes: 1
-  post_id: 
+  post: two
